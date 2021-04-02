@@ -1,10 +1,11 @@
 # cache-server-spring
-A Java / Spring Boot server that uses AWS DynamoDB to cache API responses 
 
-To test it, just run the below command via docker compose:
+A simple service written in `Java / Spring Boot` that uses `AWS DynamoDB` to cache responses from `VirusTotal`.
+
+For authorization to VirusTotal API, there is a `.env` file which [loads the API key](https://docs.docker.com/compose/environment-variables/) into the app container as **VT_API_KEY** env variable.
+
+The setup can be run via docker-compose:
 
 ```
 docker-compose up --build --abort-on-container-exit
 ```
-
-I've also included some historically useful scripts in `/bin` which are now kinda obsolete thansk to the docker-compose file.
