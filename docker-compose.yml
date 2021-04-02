@@ -1,31 +1,29 @@
 version: '3.8'
 services:
   dynamodb:
-    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
-    image: "amazon/dynamodb-local:latest"
-    container_name: dynamodb
+    container_name: "localstack_dynamodb_java"
+    build: localstack
     ports:
-      - "8000:8000"
-    volumes:
-      - "./docker/dynamodb:/home/dynamodblocal/data"
-    working_dir: /home/dynamodblocal
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=dynamodb
   cache_server:
     build:
       context: .
       args:
         - USERNAME=cache
-    container_name: cache-server
+    container_name: cache-server-java
     ports:
       - "8888:8888"
     environment:
       - DYNAMODB_HOST=dynamodb
-      - DYNAMODB_PORT=8000
+      - DYNAMODB_PORT=4566
       - SERVER_IP=0.0.0.0
       - SERVER_PORT=8888
-      - AWS_PROFILE=localstack
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_KEY=dummy
       - VT_API_KEY=${VT_API_KEY}
-    volumes:
-      - "~/.aws:/home/cache/.aws"
     depends_on:
       - dynamodb
     links:
